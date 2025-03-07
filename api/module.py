@@ -1,6 +1,7 @@
 import pandas as pd
 from tabulate import tabulate
 import numpy as np
+from limpiador.limpiar import limpiar
 
 def filtrarDatos(ruta_csv, numeroRegistros, departamentos, municipios, cultivos):
     try:
@@ -61,13 +62,7 @@ def calcularMedianas(resultadosDataFrame):
         columnasInteres = ["pH agua:suelo 2,5:1,0", "Fósforo (P) Bray II mg/kg",
                            "Potasio (K) intercambiable cmol(+)/kg"]
 
-        df_limpio = resultadosDataFrame
-
-        for col in columnasInteres:
-
-            df_limpio[col] = df_limpio[col].astype(str)
-            df_limpio[col] = df_limpio[col].str.replace(',', '')
-            df_limpio[col] = df_limpio[col].str.replace('<', '').str.replace('>', '')
+        df_limpio = limpiar(resultadosDataFrame)
 
         df_numerico = df_limpio[columnasInteres].apply(pd.to_numeric, errors='coerce')
 
